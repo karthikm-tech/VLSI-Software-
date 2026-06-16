@@ -1,0 +1,2 @@
+1. Dsch3.exe for schematic 
+2. Microwind3.exe for Layout 
