@@ -1,0 +1,26 @@
+Verilog program for inverter: 
+module inverter(a,b) ; 
+input a; 
+output b; 
+assign b = ~a; 
+endmodule 
+
+
+Test Bench program: 
+module inverter_tb; 
+reg a; 
+wire b; 
+inverter uut (a,b); 
+initial 
+begin 
+a=1'b0; 
+#100 a =1'b1; 
+#100 a=1'b0;
+#100 a =1'b1; 
+#100; 
+end 
+initial 
+begin 
+$monitor( $time, " a=%b and b=%b”, a , b ); 
+end 
+endmodule
