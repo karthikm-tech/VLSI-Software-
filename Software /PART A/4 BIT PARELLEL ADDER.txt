@@ -1,0 +1,38 @@
+4 BIT PARELLEL ADDER:
+
+module parellel (a, b, cin, sum, carry); 
+input [3:0] a,b; 
+input cin; 
+output [3:0] sum; 
+output carry; 
+wire [3:1] w; 
+
+fulladder fa0(.a[0], b[0],. cin,.sum[0],.w[1]); 
+fulladder fa1(.a[1], b[1],. w[1],.sum[1],.w[2]); 
+fulladder fa2(.a[2], b[2],. w[2],.sum[2],.w[3]); 
+fulladder fa3(a[3],.b[3],.w[3],.sum[3],.carry); 
+endmodule
+ 
+module fulladder (a, b, cin, sum, carry); 
+input a, b, cin; 
+output sum, carry; 
+assign sum=a ^ b^ cin; 
+assign carry= (a & b)| (b & cin) | (cin & a); 
+endmodule 
+
+
+Test Bench program:
+module parellel_tb; 
+reg [3:0] a,b; 
+reg cin; 
+wire [3:0] sum; 
+wire carry; 
+parellel uut (a, b, cin, sum, carry); 
+initial 
+begin 
+a=4'b0111; b=4'b0100; cin=1'b0; 
+#10; a=4'b1011; b=4'b0110; cin=1'b1; 
+end 
+initial 
+$monitor ($time, "a=%b b=%b cin=%b sum=%b carry=%b",a, b, cin, sum, carry); 
+Endmodule 

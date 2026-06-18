@@ -1,0 +1,150 @@
+FLIP FLOPS
+
+D flip flops :
+Verilog code
+
+module dff (reset, clock, d, q, 
+qb); input reset, clock, d; 
+output q, 
+qb; reg q; 
+wire qb; 
+always @ (posedge clock) 
+begin 
+if 
+(reset) 
+q<=1'b 
+0; 
+else 
+q<=d; 
+end 
+assign 
+qb=~q; 
+endmodule
+
+Test bench program 
+
+module dff_tb; 
+reg clock, reset, 
+d; wire q, qb; 
+dff uut (reset, clock, d, q, 
+qb); initial 
+begin 
+clock=1'b1; 
+reset=1'b0; 
+end 
+always #5 clock=~clock; 
+always #40 reset=~reset; 
+initial begin 
+#20 d =1'b1; 
+#20 d =1'b0; 
+#30 d =1'b1; 
+#30 d =1'b0; 
+End 
+initial 
+begin 
+$monitor ($time, "reset=%b clock=%b d=%b q=%b 
+qb=%b", reset, clock, d, q, qb); 
+end 
+endmodule
+
+
+
+JK FF
+
+Verilog code:
+
+module JK_FF (JK, clock, q, qb);
+
+input [1:0] JK;
+input clock;
+output reg q, qb;
+
+always @(posedge clock)
+begin
+    case (JK)
+        2'b00 : q = q;
+        2'b01 : q = 1'b0;
+        2'b10 : q = 1'b1;
+        2'b11 : q = ~q;
+    endcase
+
+    qb = ~q;
+end
+
+endmodule
+
+
+Test bench program : 
+
+module JK_ff_tb;
+
+reg [1:0] JK;
+reg clock;
+wire q, qb;
+
+JK_FF uut(JK, clock, q, qb);
+
+initial
+clock = 1'b1;
+
+always #5 clock = ~clock;
+
+initial
+begin
+    JK = 2'b00; #20;
+    JK = 2'b01; #20;
+    JK = 2'b10; #20;
+    JK = 2'b11; #50;
+end
+
+initial
+$monitor($time, "JK=%b q=%b qb=%b", JK, q, qb);
+
+endmodule
+
+
+
+
+RS FF:
+
+Verilog code:
+
+module rs_ff(rs, clock, q, qb); 
+input [1:0] rs; 
+input clock; 
+output reg q, qb; 
+always @ (posedge clock) 
+begin 
+case (rs) 
+2'b00 : q = q ; 
+2'b01 : q = 1'b1 ; 
+2'b10 : q = 1'b0 ; 
+2'b11 : q = 1'dZ ; 
+endcase 
+qb =~ q; 
+end 
+endmodule 
+
+
+
+Test bench program :
+
+module rs_ff_tb; 
+reg [1:0] sr; 
+reg clock; 
+wire q, qb; 
+rs_ff uut(rs, clock, q, qb); 
+initial 
+clock=1'b1; 
+always #5 clock=~clock; 
+initial 
+begin 
+rs=2'b00; #20; 
+rs =2'b01; #20; 
+rs =2'b10; #20; 
+rs =2'b11; #50; 
+end 
+initial 
+$monitor ($time, "rs=%b q=%b qb=%b ", rs, q, 
+qb); 
+endmodule 

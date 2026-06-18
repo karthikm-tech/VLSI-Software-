@@ -1,0 +1,60 @@
+4 BIT UP/DOWN ASYNCRONUS COUNTER 
+
+Verilog Programme :
+
+module asynccount(clk,rst,q) ; 
+input rst,clk; 
+output [3:0]q; 
+reg q0,q1,q2,q3; 
+always @(posedge clk or posedge rst) 
+begin 
+if(rst) 
+q0=1'b0; 
+else 
+q0=~q0; 
+end 
+always @(negedge q0 or posedge rst) 
+begin 
+if(rst) 
+q1=1'b0; 
+else 
+q1=~q1; 
+end 
+always @(negedge q1 or posedge rst) 
+begin 
+if(rst) 
+q2=1'b0; 
+else 
+q2=~q2; 
+end 
+always @(negedge q2 or posedge 
+rst) 
+begin 
+if(rst) 
+q3=1'b0; 
+else 
+q3=~q3; 
+end 
+assign q={q3,q2,q1,q0}; 
+Endmodule
+
+
+Testbench program:
+
+module asyncounter_tb; 
+reg clock, reset; 
+wire [3:0] q; 
+asyncounter uut(clock, reset, q); 
+initial 
+clock=1'b0; 
+always #10 clock=~clock; 
+initial 
+begin 
+#20; reset=1'b1; 
+#20; reset=1'b0; 
+end 
+initial 
+$monitor( $time, " reset=%b q = 
+%b" ,reset, q); 
+Endmodule 
+
